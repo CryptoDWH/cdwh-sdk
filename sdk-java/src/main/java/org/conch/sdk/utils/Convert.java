@@ -21,18 +21,21 @@
 
 package org.conch.sdk.utils;
 
-import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+import org.apache.commons.lang3.StringUtils;
 
 public final class Convert {
 
@@ -217,39 +220,6 @@ public final class Convert {
             bytes[i] = (byte)(n >> (8 * i));
         }
         return bytes;
-    }
-
-    public static int countJsonBytes(Object obj){
-        return toBytes(JSONObject.toJSONString(obj)).length;
-    }
-    
-    public static int writeString(ByteBuffer buffer, String content) {
-        byte[] contentBytes = toBytes(content);
-        buffer.putInt(contentBytes.length);
-        buffer.put(contentBytes);
-        return contentBytes.length;
-    }
-    
-    public static int writeMap(ByteBuffer buffer, Map map) {
-        return writeString(buffer,JSONObject.toJSONString(map));
-    }
-    
-    public static int writeList(ByteBuffer buffer, List list) {
-        return writeString(buffer,JSONObject.toJSONString(list));
-    }
-    
-    public static int writeMapArray(ByteBuffer buffer, List<Map> mapArray) {
-        int size = 0;
-        if(mapArray == null || mapArray.size() <= 0) return size;
-        
-        for(Map map : mapArray){
-            size += writeString(buffer,JSONObject.toJSONString(map));
-        }
-        return size;
-    }
-
-    public static int writeObject(ByteBuffer buffer, Object object) {
-        return writeString(buffer, JSONObject.toJSONString(object));
     }
 
     public static String truncate(String s, String replaceNull, int limit, boolean dots) {
