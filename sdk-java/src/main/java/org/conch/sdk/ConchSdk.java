@@ -119,7 +119,7 @@ public class ConchSdk {
      */
     static class ConchCase {
         //CASE: generate new address
-        public static void generateNewAccount(){
+        public static void generateAccount(){
             //TODO
             System.out.println("Finished generateNewAccount");
         }
@@ -144,7 +144,7 @@ public class ConchSdk {
     }
 
     public static void main(String[] args) {
-        ConchCase.generateNewAccount();
+        ConchCase.generateAccount();
         ConchCase.getAccountInfo();
         ConchCase.getAccountId();
         ConchCase.verifyAccount();
