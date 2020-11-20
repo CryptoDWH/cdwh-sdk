@@ -1,4 +1,4 @@
-package org.sdk.crypto;
+package org.conch.sdk.crypto;
 
 /* Ported from C to Java by Dmitry Skiba [sahn0], 23/02/08.
  * Original: http://cds.xs4all.nl:8081/ecdh/

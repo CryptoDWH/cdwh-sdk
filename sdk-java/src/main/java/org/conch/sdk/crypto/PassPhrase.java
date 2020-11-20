@@ -1,9 +1,12 @@
-package org.sdk.crypto;
+package org.conch.sdk.crypto;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
 
+/**
+ * @author Zack
+ */
 public class PassPhrase {
     private static final String[] words = {
             "like", "just", "love", "know", "never", "want", "time", "out", "there", "make", "look", "eye", "down", "only", "think", "heart", "back", "then", "into", "about",

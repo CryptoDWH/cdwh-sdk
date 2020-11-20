@@ -19,7 +19,7 @@
  *
  */
 
-package org.sdk.crypto;
+package org.conch.sdk.crypto;
 
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -31,7 +31,7 @@ import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.jcajce.provider.digest.Keccak;
 import org.bouncycastle.jcajce.provider.digest.RIPEMD160;
-import org.sdk.utils.Convert;
+import org.conch.sdk.utils.Convert;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

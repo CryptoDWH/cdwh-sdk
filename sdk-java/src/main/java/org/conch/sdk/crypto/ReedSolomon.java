@@ -1,7 +1,7 @@
 /*
     Reed Solomon Encoding and Decoding for Conch
 */
-package org.sdk.crypto;
+package org.conch.sdk.crypto;
 
 final class ReedSolomon {
 

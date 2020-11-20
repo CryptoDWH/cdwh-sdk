@@ -1,5 +1,10 @@
-# Compiled class file
+# Compiled class and project files
 *.class
+.DS_Store
+.svn
+.idea*
+*.iml
+classes
 
 # Log file
 *.log
@@ -11,7 +16,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
