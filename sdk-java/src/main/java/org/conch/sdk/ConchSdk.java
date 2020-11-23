@@ -3,6 +3,9 @@ package org.conch.sdk;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.conch.sdk.crypto.Crypto;
 import org.conch.sdk.crypto.PassPhrase;
@@ -74,6 +77,16 @@ public class ConchSdk {
     }
 
     /**
+     * Convert the account id to rs-address
+     *
+     * @param accountId
+     * @return
+     */
+    private static String getRsAddress(Long accountId) {
+        return ACCOUNT_PREFIX + Crypto.rsEncode(accountId);
+    }
+
+    /**
      * Convert the rs-address to account id
      *
      * @param rsAddress
@@ -119,34 +132,80 @@ public class ConchSdk {
      */
     static class ConchCase {
         //CASE: generate new address
-        public static void generateAccount(){
+        public static Map<String, String> generateAccount(){
             //TODO
-            System.out.println("Finished generateNewAccount");
+            Map<String, String> accountData = new HashMap<>();
+            try {
+                String passPhrase = PassPhrase.generatePassPhrase();
+                byte[] publicKey = ConchSdk.getPublicKey(passPhrase);
+                byte[] privateKey = ConchSdk.getPrivateKey(passPhrase);
+                long accountId = ConchSdk.getAccountId(publicKey).longValue();
+                String rsAddress = ConchSdk.getRsAddress(accountId);
+                accountData.put("passPhrase", passPhrase);
+                accountData.put("publicKey", Convert.toHexString(publicKey));
+                accountData.put("privateKey", Convert.toHexString(privateKey));
+                accountData.put("accountId", String.valueOf(accountId));
+                accountData.put("rsAddress", rsAddress);
+                System.out.println("Finished generateNewAccount");
+                System.out.println("public key:" + Convert.toHexString(publicKey));
+                System.out.println("private key:" + Convert.toHexString(privateKey));
+                System.out.println("account id:" + accountId);
+                System.out.println("rs address:" + rsAddress);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            return accountData;
         }
 
         //CASE: secret phrase -> rs-address + public key + private key
-        public static void getAccountInfo(){
+        public static void getAccountInfo(String secretPhrase){
             //TODO
+            byte[] publicKey = ConchSdk.getPublicKey(secretPhrase);
+            byte[] privateKey = ConchSdk.getPrivateKey(secretPhrase);
+            String rsAddress = ConchSdk.getRsAddress(ConchSdk.getAccountId(publicKey).longValue());
             System.out.println("Finished getAccountInfo");
+            System.out.println("public key:" + Convert.toHexString(publicKey));
+            System.out.println("private key:" + Convert.toHexString(privateKey));
+            System.out.println("rs address:" + rsAddress);
         }
 
         //CASE: rs-address -> account id
-        public static void getAccountId(){
-            //TODO
+        public static void getAccountId(String rsAddress){
+            long accountId = ConchSdk.getAccountId(rsAddress);
             System.out.println("Finished getAccountId");
+            System.out.println("account id:" + accountId);
+        }
+
+        //CASE: account id -> rs-address
+        public static void getRsAddress(long accountId){
+            String rsAddress = ConchSdk.getRsAddress(accountId);
+            System.out.println("Finished getRsAddress");
+            System.out.println("rs-address:" + rsAddress);
         }
 
         //CASE: verify account
-        public static void verifyAccount(){
+        public static void verifyAccount(String rsAddress, String publicKey){
             //TODO
+            boolean validAccount = ConchSdk.isValidAccount(rsAddress, publicKey);
             System.out.println("Finished verifyAccount");
+            System.out.println("VerifyAccount result:" + validAccount);
+        }
+
+        //CASE: verify account
+        public static void verifyAccount(String rsAddress, byte[] publicKey){
+            //TODO
+            boolean validAccount = ConchSdk.isValidAccount(rsAddress, publicKey);
+            System.out.println("Finished verifyAccount");
+            System.out.println("VerifyAccount result:" + validAccount);
         }
     }
 
     public static void main(String[] args) {
-        ConchCase.generateAccount();
-        ConchCase.getAccountInfo();
-        ConchCase.getAccountId();
-        ConchCase.verifyAccount();
+        Map<String, String> account = ConchCase.generateAccount();
+        ConchCase.getAccountInfo(account.get("passPhrase"));
+        ConchCase.getAccountId(account.get("rsAddress"));
+        ConchCase.getRsAddress(Long.parseLong(account.get("accountId")));
+        ConchCase.verifyAccount(account.get("rsAddress"), account.get("publicKey"));
+        ConchCase.verifyAccount(account.get("rsAddress"), Convert.parseHexString(account.get("publicKey")));
     }
 }
