@@ -18,6 +18,11 @@ import org.conch.sdk.utils.Convert;
  * - secret phrase(secretPhrase) is a group of 12 words to access the address
  * - you can see use cases in ConchCase
  *
+ * - 主要提供了用户生成账户信息的方法、验证地址正确性的方法等
+ * - rs-address(rsAddress)是一个格式化的字符串，比如：CDW-9UYJ-U6XK-P45Q-852QF
+ * - secret phrase(secretPhrase)是一组由12个单词组成的字符串，用于生成公私钥等信息
+ * - 使用案例在ConchCase类中可供参考
+ *
  * @author Zack, Ben
  */
 public class ConchSdk {
@@ -26,7 +31,10 @@ public class ConchSdk {
 
     /**
      * Generate a new address
+     *
+     * 每个账户的信息都是通过一组由12个单词组成的字符串生成的，该方法用于生成一个这样的字符串来创建账户信息
      * @return secret phrase of new address
+     * @return 返回一个新地址的密钥字符串
      */
     public static String generateAccount(){
         String secretPhrase = "";
@@ -40,6 +48,8 @@ public class ConchSdk {
 
     /**
      * Get public key from secret phrase
+     *
+     * 通过secretPhrase生成新地址的公钥，同一个secretPhrase生成的时同一个公钥
      * @param secretPhrase
      * @return
      */
@@ -48,7 +58,9 @@ public class ConchSdk {
     }
 
     /**
+     * Get private key from secret phrase
      *
+     * 通过secretPhrase生成新地址的私钥，同一个secretPhrase生成的是同一个私钥
      * @param secretPhrase
      * @return
      */
@@ -58,6 +70,8 @@ public class ConchSdk {
 
     /**
      * Valid and compare rs-address and public key
+     *
+     * 通过rs-address可以获取用户id，通过public key也可以获取用户id，将获取的id进行对比，就能判断用户地址是否正确
      *
      * @param rsAddress
      * @param publicKey
@@ -79,20 +93,24 @@ public class ConchSdk {
     /**
      * Convert the account id to rs-address
      *
+     * 将用户id转换成rs-address
+     *
      * @param accountId
      * @return
      */
-    private static String getRsAddress(Long accountId) {
+    public static String getRsAddress(Long accountId) {
         return ACCOUNT_PREFIX + Crypto.rsEncode(accountId);
     }
 
     /**
      * Convert the rs-address to account id
      *
+     * 将rs-address转换成用户id
+     *
      * @param rsAddress
      * @return
      */
-    private static long getAccountId(String rsAddress) {
+    public static long getAccountId(String rsAddress) {
         rsAddress = rsAddress.toUpperCase();
         long accountId;
         if (rsAddress.startsWith(ACCOUNT_PREFIX)) {
@@ -106,15 +124,20 @@ public class ConchSdk {
     /**
      * Convert the public key to account id
      *
+     * 通过公钥生成用户id
+     *
      * @param publicKey
      * @return
      */
-    private static BigInteger getAccountId(byte[] publicKey) {
+    public static BigInteger getAccountId(byte[] publicKey) {
         byte[] bytes = Convert.parseHexString(Convert.toHexString(Crypto.sha256().digest(publicKey)));
         return new BigInteger(Arrays.copyOfRange(bytes, 0, 8));
     }
 
     /**
+     * Valid and compare rs-address and public key
+     *
+     * 通过rs-address可以获取用户id，通过public key也可以获取用户id，将获取的id进行对比，就能判断用户地址是否正确
      *
      * @param rsAddress
      * @param publicKey
@@ -135,25 +158,21 @@ public class ConchSdk {
         public static Map<String, String> generateAccount(){
             //TODO
             Map<String, String> accountData = new HashMap<>();
-            try {
-                String passPhrase = PassPhrase.generatePassPhrase();
-                byte[] publicKey = ConchSdk.getPublicKey(passPhrase);
-                byte[] privateKey = ConchSdk.getPrivateKey(passPhrase);
-                long accountId = ConchSdk.getAccountId(publicKey).longValue();
-                String rsAddress = ConchSdk.getRsAddress(accountId);
-                accountData.put("passPhrase", passPhrase);
-                accountData.put("publicKey", Convert.toHexString(publicKey));
-                accountData.put("privateKey", Convert.toHexString(privateKey));
-                accountData.put("accountId", String.valueOf(accountId));
-                accountData.put("rsAddress", rsAddress);
-                System.out.println("Finished generateNewAccount");
-                System.out.println("public key:" + Convert.toHexString(publicKey));
-                System.out.println("private key:" + Convert.toHexString(privateKey));
-                System.out.println("account id:" + accountId);
-                System.out.println("rs address:" + rsAddress);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
+            String passPhrase = ConchSdk.generateAccount();
+            byte[] publicKey = ConchSdk.getPublicKey(passPhrase);
+            byte[] privateKey = ConchSdk.getPrivateKey(passPhrase);
+            long accountId = ConchSdk.getAccountId(publicKey).longValue();
+            String rsAddress = ConchSdk.getRsAddress(accountId);
+            accountData.put("passPhrase", passPhrase);
+            accountData.put("publicKey", Convert.toHexString(publicKey));
+            accountData.put("privateKey", Convert.toHexString(privateKey));
+            accountData.put("accountId", String.valueOf(accountId));
+            accountData.put("rsAddress", rsAddress);
+            System.out.println("Finished generateNewAccount");
+            System.out.println("public key:" + Convert.toHexString(publicKey));
+            System.out.println("private key:" + Convert.toHexString(privateKey));
+            System.out.println("account id:" + accountId);
+            System.out.println("rs address:" + rsAddress);
             return accountData;
         }
 
