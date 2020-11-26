@@ -1,0 +1,50 @@
+{
+  "_from": "mw-blockchain",
+  "_location": "/mw-blockchain",
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "mw-blockchain",
+    "name": "mw-blockchain",
+    "escapedName": "mw-blockchain",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_spec": "mw-blockchain",
+  "_where": "E:\\Js",
+  "author": {
+    "name": "wbw157@gmail.com"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@trust/webcrypto": "^0.9.2",
+    "async": "^2.1.4",
+    "crypto-js": "^3.1.9-1",
+    "jquery": "^3.1.1",
+    "jsbn": "^0.1.0",
+    "jsdom": "^9.9.1",
+    "pako": "^1.0.4"
+  },
+  "deprecated": false,
+  "description": "Client API library for the MW Blockchain",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "blockchain",
+    "client",
+    "api"
+  ],
+  "license": "MIT",
+  "main": "nrs.node.bridge.js",
+  "name": "mw-blockchain",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.5"
+}
