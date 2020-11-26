@@ -4,7 +4,7 @@ js version of cdwh chain sdk
 ## Functions
 Implementation of offline signature, address generation, signature verification SDK. Specific input/output criteria & examples Please move to the sample code
 ### offline signature
-> sample code `sample\send.money.js`
+> sample code `sample\offline.signature.js`
 
 ### address generation
 > sample code `sample\address.generate.js`

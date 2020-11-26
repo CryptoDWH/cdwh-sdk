@@ -4,7 +4,7 @@ js version of cdwh chain sdk
 ## Functions
 实现离线签名、地址生成、签名校验sdk。具体输入输出条件&示例请移步示例代码
 ### 离线签名
-> 示例代码 `sample\send.money.js`
+> 示例代码 `sample\offline.signature.js`
 
 ### 地址生成
 > 示例代码 `sample\address.generate.js`
