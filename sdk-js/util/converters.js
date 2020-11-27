@@ -299,7 +299,7 @@ var converters = function() {
             if (/^NXT\-/i.test(account)) {
                 return String(account).escapeHTML();
             } else {
-                var address = new NxtAddress();
+                var address = new MwAddress();
 
                 if (address.set(account)) {
                     return address.toString().escapeHTML();
