@@ -1,6 +1,8 @@
 # cdwh-sdk-js
 js version of cdwh chain sdk 
 
+- [中文版](./README_CN.md)
+
 ## Functions
 Implementation of offline signature, address generation, signature verification SDK. Specific input/output criteria & examples Please move to the sample code
 ### offline signature
