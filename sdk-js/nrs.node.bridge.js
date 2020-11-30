@@ -47,7 +47,7 @@ exports.load = function(callback) {
             navigator.userAgent = "";
 
             // Now load some NXT specific libraries into the global scope
-            global.NxtAddress = require('./util/nxtaddress');
+            global.MwAddress = require('./util/mwaddress');
             global.curve25519 = require('./crypto/curve25519');
             global.curve25519_ = require('./crypto/curve25519_');
             require('./util/extensions');

@@ -13,13 +13,7 @@
  *                                                                            *
  ******************************************************************************/
 
-/*
-    NXT address class, extended version (with error guessing).
-
-    Version: 1.0, license: Public Domain, coder: NxtChg (admin@nxtchg.com).
-*/
-
-function NxtAddress() {
+function MwAddress() {
 	var codeword = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	var syndrome = [0, 0, 0, 0, 0];
 
@@ -438,5 +432,5 @@ function NxtAddress() {
 }
 
 if (isNode) {
-    module.exports = NxtAddress;
+    module.exports = MwAddress;
 }

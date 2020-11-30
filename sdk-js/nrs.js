@@ -31,7 +31,7 @@
  * @depends {crypto/3rdparty/jssha256.js}
  * @depends {util/converters.js}
  * @depends {util/extensions.js}
- * @depends {util/nxtaddress.js}
+ * @depends {util/mwaddress.js}
  */
 var NRS = (function(NRS, $, undefined) {
 	"use strict";

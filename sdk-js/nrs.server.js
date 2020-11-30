@@ -179,10 +179,10 @@ var NRS = (function (NRS, $, undefined) {
         if (requestType == "getAccountId") {
             accountId = NRS.getAccountId(data.secretPhrase);
 
-            var nxtAddress = new NxtAddress();
+            var mwAddress = new MwAddress();
             var accountRS = "";
-            if (nxtAddress.set(accountId)) {
-                accountRS = nxtAddress.toString();
+            if (mwAddress.set(accountId)) {
+                accountRS = mwAddress.toString();
             }
             callback({
                 "account": accountId,
@@ -1586,7 +1586,7 @@ var NRS = (function (NRS, $, undefined) {
 
     function addAddressData(data) {
         if (typeof data == "object" && ("recipient" in data)) {
-            var address = new NxtAddress();
+            var address = new MwAddress();
             if (/^NXT\-/i.test(data.recipient)) {
                 data.recipientRS = data.recipient;
                 if (address.set(data.recipient)) {
