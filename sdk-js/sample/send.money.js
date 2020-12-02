@@ -8,8 +8,7 @@ loader.load(function(NRS) {
      * loader.load()已对sdk进行初始化并载入到 NRS对象，NRS通过回调入参传入，可通过 NRS.function(params)调用sdk内部定义的方法
      */
     var data = {
-        recipient: NRS.getAccountIdFromPublicKey(config.recipientPublicKey), // public key to account id
-        recipientPublicKey: config.recipientPublicKey, // Optional - public key announcement to init a new account
+        recipient: NRS.getAccountIdFromRS(config.recipient), // public key to account id
         amountNQT: NRS.convertToNQT("0.23"), // MW to NQT conversion
         secretPhrase: config.secretPhrase,
         // encryptedMessageIsPrunable: "true" // Optional - make the attached message prunable
