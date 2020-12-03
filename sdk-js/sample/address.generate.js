@@ -24,4 +24,9 @@ loader.load(function (NRS) {
     // 根据公钥获取地址
     let addressRS = NRS.getAccountIdFromPublicKey(publicKey, true);
     NRS.logConsole("[Generate] addressRS = " + addressRS);
+
+    let address = new MwAddress();
+    address.set(addressRS);
+    NRS.logConsole("[Generate] addressID = " + address.account_id());
+
 });

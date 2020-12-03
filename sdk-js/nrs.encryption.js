@@ -100,6 +100,12 @@ var NRS = (function (NRS, $) {
 		}
 	};
 
+	NRS.getAccountIdFromRS = function (addressRS) {
+		let address = new MwAddress();
+		address.set(addressRS);
+		return address.account_id();
+	}
+
 	NRS.getEncryptionKeys = function (options, secretPhrase){
 		if (!options.sharedKey) {
 			if (!options.privateKey) {

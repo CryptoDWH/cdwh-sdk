@@ -296,7 +296,7 @@ var converters = function() {
             return CryptoJS.lib.WordArray.create(words, len);
         },
         convertNumericToRSAccountFormat: function (account) {
-            if (/^NXT\-/i.test(account)) {
+            if (/^CDW\-/i.test(account)) {
                 return String(account).escapeHTML();
             } else {
                 var address = new MwAddress();
