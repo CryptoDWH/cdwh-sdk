@@ -1,5 +1,5 @@
-# cdwh-sdk-js
-js version of cdwh chain sdk 
+# CDWH SDK JS
+JS version of cdwh chain sdk 
 
 - [中文版](./README_CN.md)
 
@@ -88,7 +88,7 @@ loader.load(function (NRS) {
      */
 });
 ```
-3. load() final call rollback(global.client)，Code starts to execute **自定义回调处理逻辑**
+3. load() final call rollback(global.client)，Code starts to execute **Custom Callback Logic**
 
 ### Attention
 

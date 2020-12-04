@@ -1,5 +1,34 @@
-# cdwh-sdk
-sdk tools of cdwh chain
+# CDWH SDK
+SDK tools of cdwh chain
+
+```
+├── node        // node guide & node docker image
+├── sdk-java    // java sdk 
+├── sdk-js      // js sdk
+
+```
+
+--- 
+
+## Integration Nodes [Devnet]
+> Please R&D with DevNet firstly, you can get MW coins from official team  
+- http://mwfs.noip.cn:60
+- http://mwfs.noip.cn:61
+
+*NOTE: DevNet isn't stable, any problems please feedback to official team*
+
+## Integration Nodes [Testnet]
+- [LightNode]http://mwfs.noip.cn:55
+- [BAK]http://testna.mw.run:7216
+- [BAK] http://testnb.mw.run:7216
+- [BAK] http://testboot.mw.run:7216
+
+*NOTE: We'll update URL of LightNode in the feature*
+
+## API Manual
+https://docs.mw.run
+
+---
 
 ## 调试节点 [Devnet]
 > 优先在开发网(DevNet)进行调试，需要测试币请联系官方团队
@@ -18,5 +47,4 @@ sdk tools of cdwh chain
 *注：轻节点URL可能存在不定期的变动*
 
 ## API文档
-
 https://docs.mw.run
