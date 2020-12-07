@@ -193,7 +193,10 @@ var NRS = (function (NRS, $, undefined) {
         //check to see if secretPhrase supplied matches logged in account, if not - show error.
         if ("secretPhrase" in data) {
             accountId = NRS.getAccountId(NRS.rememberPassword ? _password : data.secretPhrase);
-            if (accountId != NRS.account && !data.calculateFee) {
+
+            /*if (accountId != NRS.account && !data.calculateFee) {
+                // 关闭该校验，sdk内部无登录
+
                 callback({
                     "errorCode": 1,
                     "errorDescription": $.t("error_passphrase_incorrect")
@@ -201,7 +204,8 @@ var NRS = (function (NRS, $, undefined) {
             } else {
                 //ok, accountId matches..continue with the real request.
                 NRS.processAjaxRequest(requestType, data, callback, options);
-            }
+            }*/
+            NRS.processAjaxRequest(requestType, data, callback, options);
         } else {
             NRS.processAjaxRequest(requestType, data, callback, options);
         }
