@@ -1,9 +1,10 @@
 {
   "url": "http://testna.mw.run:7216",
   "secretPhrase": "",
-  "recipient": "CDW-HEJB-AP9W-6MAL-32Z24",
+  "recipient": "CDW-F5XQ-NQBV-U926-HWU66",
   "isTestNet": true,
   "message": "hello,world",
   "signature": "3f6217f81aeb903960c94250cd51e2b2fb48cf2e227f7da740141ab62528910001fd2d7062516420af01fdb291bd8e2f8a96772c2d5b0e3bedf5bd8df1cd0fdf",
-  "senderPublicKey": "6065fa6fda743b3714f1ccb66543e3d5da658f886662a698e840831d1b6f225f"
+  "senderPublicKey": "6065fa6fda743b3714f1ccb66543e3d5da658f886662a698e840831d1b6f225f",
+  "recipientPublicKey": ""
 }
