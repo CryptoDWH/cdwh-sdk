@@ -9,7 +9,7 @@ exports.init = function(params) {
         return this;
     }
     options.url = params.url;
-    options.secretPhrase = params.secretPhrase;
+    // options.secretPhrase = params.secretPhrase; // 注释私钥，使得SDK可重复调用转账相关接口
     options.isTestNet = params.isTestNet;
     return this;
 };

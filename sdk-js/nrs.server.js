@@ -366,7 +366,7 @@ var NRS = (function (NRS, $, undefined) {
             crossDomain: true,
             dataType: "json",
             type: type,
-            timeout: 30000,
+            timeout: 300000,
             async: (options.isAsync === undefined ? true : options.isAsync),
             currentPage: currentPage,
             currentSubPage: currentSubPage,
@@ -1518,7 +1518,7 @@ var NRS = (function (NRS, $, undefined) {
             crossDomain: true,
             dataType: "json",
             type: "POST",
-            timeout: 30000,
+            timeout: 300000,
             async: true,
             data: {
                 "transactionBytes": transactionData,
