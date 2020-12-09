@@ -192,11 +192,11 @@ var NRS = (function (NRS, $, undefined) {
         }
         //check to see if secretPhrase supplied matches logged in account, if not - show error.
         if ("secretPhrase" in data) {
+            // 为全局账户对象重新赋值
+            NRS.account = NRS.getAccountId(data.secretPhrase);
+            NRS.accountRS = converters.convertNumericToRSAccountFormat(NRS.account);
             accountId = NRS.getAccountId(NRS.rememberPassword ? _password : data.secretPhrase);
-
-            /*if (accountId != NRS.account && !data.calculateFee) {
-                // 关闭该校验，sdk内部无登录
-
+            if (accountId != NRS.account && !data.calculateFee) {
                 callback({
                     "errorCode": 1,
                     "errorDescription": $.t("error_passphrase_incorrect")
@@ -204,8 +204,7 @@ var NRS = (function (NRS, $, undefined) {
             } else {
                 //ok, accountId matches..continue with the real request.
                 NRS.processAjaxRequest(requestType, data, callback, options);
-            }*/
-            NRS.processAjaxRequest(requestType, data, callback, options);
+            }
         } else {
             NRS.processAjaxRequest(requestType, data, callback, options);
         }
@@ -291,8 +290,8 @@ var NRS = (function (NRS, $, undefined) {
             }
 
             delete data.secretPhrase;
-
-            if (NRS.accountInfo && NRS.accountInfo.publicKey) {
+            // 兼容多次调用的情况，若不匹配则更新公钥
+            if (NRS.accountInfo && NRS.accountInfo.publicKey && NRS.accountInfo.publicKey === NRS.generatePublicKey(secretPhrase)) {
                 data.publicKey = NRS.accountInfo.publicKey;
             } else if (!data.doNotSign && secretPhrase) {
                 data.publicKey = NRS.generatePublicKey(secretPhrase);
@@ -563,6 +562,7 @@ var NRS = (function (NRS, $, undefined) {
         if (transaction.publicKey != NRS.accountInfo.publicKey && transaction.publicKey != data.publicKey) {
             return false;
         }
+
 
         if (transaction.deadline !== data.deadline) {
             return false;
