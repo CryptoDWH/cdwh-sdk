@@ -290,8 +290,8 @@ var NRS = (function (NRS, $, undefined) {
             }
 
             delete data.secretPhrase;
-
-            if (NRS.accountInfo && NRS.accountInfo.publicKey) {
+            // 兼容多次调用的情况，若不匹配则更新公钥
+            if (NRS.accountInfo && NRS.accountInfo.publicKey && NRS.accountInfo.publicKey === NRS.generatePublicKey(secretPhrase)) {
                 data.publicKey = NRS.accountInfo.publicKey;
             } else if (!data.doNotSign && secretPhrase) {
                 data.publicKey = NRS.generatePublicKey(secretPhrase);
@@ -562,6 +562,7 @@ var NRS = (function (NRS, $, undefined) {
         if (transaction.publicKey != NRS.accountInfo.publicKey && transaction.publicKey != data.publicKey) {
             return false;
         }
+
 
         if (transaction.deadline !== data.deadline) {
             return false;
