@@ -25,12 +25,12 @@ SDK tools of cdwh chain
 
 *NOTE: We'll update URL of LightNode in the feature*
 
-## API Manual
-https://docs.mw.run
-
 ## DOCKER
 - network node can install program by the docker image.if you proficient in docker, you can install by this way.
-- doc reference: https://github.com/CryptoDWH/cdwh-sdk/blob/main/node/README.md
+- [Doc reference](./node/README.md)
+
+## API Manual
+https://docs.mw.run
 
 ---
 
@@ -50,8 +50,9 @@ https://docs.mw.run
 
 *注：轻节点URL可能存在不定期的变动*
 
+## DOCKER
+- 节点可通过docker镜像方式安装运行程序，熟悉docker可用该方式进行部署。
+- [Docker文档](./node/README.md)
+
 ## API文档
 https://docs.mw.run
-
-## DOCKER
-节点可通过docker镜像方式安装运行程序，熟悉docker可用该方式进行部署，docker文档参考：https://github.com/CryptoDWH/cdwh-sdk/blob/main/node/README.md
