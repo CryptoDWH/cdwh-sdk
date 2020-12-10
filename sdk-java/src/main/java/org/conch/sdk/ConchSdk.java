@@ -82,7 +82,7 @@ public class ConchSdk {
             return false;
         }
         long accountId = getAccountId(rsAddress);
-        BigInteger publicAccountId = getAccountId(publicKey);
+        Long publicAccountId = getAccountId(publicKey);
         if (accountId == publicAccountId.longValue()) {
             return true;
         } else {
@@ -129,9 +129,9 @@ public class ConchSdk {
      * @param publicKey
      * @return
      */
-    public static BigInteger getAccountId(byte[] publicKey) {
+    public static Long getAccountId(byte[] publicKey) {
         byte[] bytes = Convert.parseHexString(Convert.toHexString(Crypto.sha256().digest(publicKey)));
-        return new BigInteger(Arrays.copyOfRange(bytes, 0, 8));
+        return Convert.fullHashToId(bytes);
     }
 
     /**
