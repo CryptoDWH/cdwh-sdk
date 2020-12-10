@@ -28,6 +28,10 @@ SDK tools of cdwh chain
 ## API Manual
 https://docs.mw.run
 
+## DOCKER
+- network node can install program by the docker image.if you proficient in docker, you can install by this way.
+- doc reference: https://github.com/CryptoDWH/cdwh-sdk/blob/main/node/README.md
+
 ---
 
 ## 调试节点 [Devnet]
@@ -48,3 +52,6 @@ https://docs.mw.run
 
 ## API文档
 https://docs.mw.run
+
+## DOCKER
+节点可通过docker镜像方式安装运行程序，熟悉docker可用该方式进行部署，docker文档参考：https://github.com/CryptoDWH/cdwh-sdk/blob/main/node/README.md
