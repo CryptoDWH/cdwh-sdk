@@ -12,7 +12,7 @@ loader.load(function (NRS) {
      * loader.load()已对sdk进行初始化并载入到 NRS对象，NRS通过回调入参传入，可通过 NRS.function(params)调用sdk内部定义的方法
      */
 
-    // 引入密钥生成函数
+        // 引入密钥生成函数
     var PassPhraseGenerator = require("../crypto/passphrasegenerator");
 
     function generate(amountNQT) {
@@ -24,26 +24,37 @@ loader.load(function (NRS) {
             NRS.logConsole("Failed to generate secretPhrase");
             return;
         }
-        NRS.logConsole("[Generate] secretPhrase = " + secretPhrase);
+        // NRS.logConsole("[Generate] secretPhrase = " + secretPhrase);
         // 根据密钥获取公钥
         let publicKey = NRS.generatePublicKey(secretPhrase);
-        NRS.logConsole("[Generate] publicKey = " + publicKey);
+        // NRS.logConsole("[Generate] publicKey = " + publicKey);
         // 根据公钥获取地址
         let addressRS = NRS.getAccountIdFromPublicKey(publicKey, true);
         NRS.logConsole("[Generate] addressRS = " + addressRS);
 
         let address = new MwAddress();
         address.set(addressRS);
-        NRS.logConsole("[Generate] addressID = " + address.account_id());
+        let accountID = address.account_id();
+        // NRS.logConsole("[Generate] addressID = " + accountID);
 
         let item = {}
         item.amountNQT = amountNQT;
         item.recipientPublicKey = publicKey;
         item.recipientRS = addressRS;
+        item.secretPhrase = secretPhrase;
+        item.accountID = accountID;
         return item;
     }
 
-    function toList (list, item) {
+    function toList(list, item) {
+        delete item.secretPhrase;
+        delete item.accountID;
+        list.push(item);
+        return list;
+    }
+
+    function toPRList(list, item) {
+        delete item.amountNQT;
         list.push(item);
         return list;
     }
@@ -57,35 +68,49 @@ loader.load(function (NRS) {
         return airdrop;
     }
 
-    function writeToJson (airdrop) {
+    function toAccountList(list, num) {
+        let accountList = {};
+        accountList.accountNum = num;
+        accountList.list = list;
+        return accountList;
+    }
+
+    function writeToJson(airdrop, filename) {
         //把data对象转换为json格式字符串
         var content = JSON.stringify(airdrop);
         //指定创建目录及文件名称，__dirname为执行当前js文件的目录
-        var file = path.join(__dirname, 'airdrop.json');
+        var file = path.join(__dirname, filename);
 
-        //写入文件
-        fs.writeFile(file, content, function(err) {
+        try { //写入文件
+            fs.writeFileSync(file, content, {
+                encoding: "utf8",
+                mode: 0o666
+            });
+        } catch (err) {
             if (err) {
                 return console.log(err);
             }
-            console.log('File create successful，Path：' + file);
-        });
+        }
+        console.log('File create successful, Path：' + file);
     }
 
     /**
      * The number of accounts generated
      * @type {number}
      */
-    let max = 1000;
+    let num = 10;
     /**
      * The amount of airdrop | Unit: 1 * 10^-8 MW
      * @type {string}
      */
-    let amountNQT  = "1";
+    let amountNQT = "1";
     let list = [];
-    for (let i = 0; i < max; i++) {
+    let PRList = [];
+    for (let i = 0; i < num; i++) {
         toList(list, generate(amountNQT));
+        toPRList(PRList, generate(amountNQT));
     }
-    writeToJson(toAirdrop(list));
+    writeToJson(toAirdrop(list), "airdrop.json");
+    writeToJson(toAccountList(PRList, num), "accountPR.json");
 
 });

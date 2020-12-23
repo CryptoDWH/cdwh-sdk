@@ -24,18 +24,21 @@ https://docs.mw.run
 ## 批量创建账户并生成批量转账文件
 
 操作步骤：
-1. clone
-2. cd sdk-js
+1. git clone (sdk-js-case分支)
+2. cd sdk-js/
 3. npm install 或 cnpm install
 4. cd sample/
 5. node address.generate.js
-6. 该目录下会自动生成 airdrop.json （批量转账文件，包含地址 + 公钥）
+6. 该目录下会生成以下文件：
+    - airdrop.json (批量转账文件，包含：地址 + 公钥 + 转账金额)
+    - accountPR.json (账户信息，包含：私钥 + 公钥 + 地址 + 账户ID)
 7. 打开airdrop.json, 输入自己的私钥至 secretPhrase
-8. 搭建的本地节点开启空投功能（另外会补充一个开启本地节点空投的功能）
+8. 搭建的本地节点开启空投功能（开启空投移步下方 [点击跳转](#jump)）
 9. 通过UI上传该文件进行空投
 10. 等待空投交易被确认，账户批量激活成功
 
-## 开启空投（批量转账）
+
+<h2 id="jump">开启空投（批量转账）</h2>
 > 为保证私钥安全性：请务必在本地 or 内网 环境下开启空投
 
 1. 添加空投配置至 conf/sharder.properties:
