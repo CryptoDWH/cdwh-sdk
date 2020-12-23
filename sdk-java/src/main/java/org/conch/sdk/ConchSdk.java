@@ -82,7 +82,7 @@ public class ConchSdk {
             return false;
         }
         long accountId = getAccountId(rsAddress);
-        BigInteger publicAccountId = getAccountId(publicKey);
+        Long publicAccountId = getAccountId(publicKey);
         if (accountId == publicAccountId.longValue()) {
             return true;
         } else {
@@ -129,9 +129,9 @@ public class ConchSdk {
      * @param publicKey
      * @return
      */
-    public static BigInteger getAccountId(byte[] publicKey) {
+    public static Long getAccountId(byte[] publicKey) {
         byte[] bytes = Convert.parseHexString(Convert.toHexString(Crypto.sha256().digest(publicKey)));
-        return new BigInteger(Arrays.copyOfRange(bytes, 0, 8));
+        return Convert.fullHashToId(bytes);
     }
 
     /**
@@ -156,7 +156,6 @@ public class ConchSdk {
     static class ConchCase {
         //CASE: generate new address
         public static Map<String, String> generateAccount(){
-            //TODO
             Map<String, String> accountData = new HashMap<>();
             String passPhrase = ConchSdk.generateAccount();
             byte[] publicKey = ConchSdk.getPublicKey(passPhrase);
@@ -178,7 +177,6 @@ public class ConchSdk {
 
         //CASE: secret phrase -> rs-address + public key + private key
         public static void getAccountInfo(String secretPhrase){
-            //TODO
             byte[] publicKey = ConchSdk.getPublicKey(secretPhrase);
             byte[] privateKey = ConchSdk.getPrivateKey(secretPhrase);
             String rsAddress = ConchSdk.getRsAddress(ConchSdk.getAccountId(publicKey).longValue());
@@ -204,7 +202,6 @@ public class ConchSdk {
 
         //CASE: verify account
         public static void verifyAccount(String rsAddress, String publicKey){
-            //TODO
             boolean validAccount = ConchSdk.isValidAccount(rsAddress, publicKey);
             System.out.println("Finished verifyAccount");
             System.out.println("VerifyAccount result:" + validAccount);
@@ -212,7 +209,6 @@ public class ConchSdk {
 
         //CASE: verify account
         public static void verifyAccount(String rsAddress, byte[] publicKey){
-            //TODO
             boolean validAccount = ConchSdk.isValidAccount(rsAddress, publicKey);
             System.out.println("Finished verifyAccount");
             System.out.println("VerifyAccount result:" + validAccount);

@@ -1,5 +1,5 @@
-# cdwh-sdk-java
-java version of cdwh chain sdk 
+# CDWH SDK Java
+Java version of cdwh chain sdk 
 
 ## Project
 - `sdk-java` is a java project, use jdk 1.8
