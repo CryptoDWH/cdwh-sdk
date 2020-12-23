@@ -7,10 +7,17 @@ loader.load(function (NRS) {
      *
      * loader.load()已对sdk进行初始化并载入到 NRS对象，NRS通过回调入参传入，可通过 NRS.function(params)调用sdk内部定义的方法
      */
-    function sendMoney(secretPhrase) {
+
+    /**
+     * 转账函数
+     * @param secretPhrase
+     * @param amount
+     * @param recipient
+     */
+    function sendMoney(secretPhrase, amount, recipient) {
         var data = {
-            recipient: NRS.getAccountIdFromRS(config.recipient), // public key to account id
-            amountNQT: NRS.convertToNQT("0.23"), // MW to NQT conversion
+            recipient: NRS.getAccountIdFromRS(recipient), // public key to account id
+            amountNQT: NRS.convertToNQT(amount), // MW to NQT conversion
             secretPhrase: secretPhrase,
             // encryptedMessageIsPrunable: "true" // Optional - make the attached message prunable
         };
@@ -30,13 +37,25 @@ loader.load(function (NRS) {
             NRS.logConsole(JSON.stringify(response));
         })
     }
-    let secretList = ["","",""];
 
-    var accountRS = NRS.convertNumericToRSAccountFormat(NRS.account);
-
-    NRS.logConsole("accountRS" + accountRS);
-    for (i=0;i<3;i++){
-
-        sendMoney(secretList[i]);
+    /**
+     * 签名验证函数
+     */
+    function signCase() {
+        let message = converters.stringToHexString("1608545346000");
+        let secret = converters.stringToHexString("***");
+        let public = NRS.getPublicKey(secret, false);
+        let sign = NRS.signBytes(message, secret);
+        let verify = NRS.verifySignature(
+            sign,
+            message,
+            public, (res) => {
+                NRS.logConsole(res);
+            });
+        console.log("verfiy " + verify);
+        console.log("sign.length\n" + sign.toString().length);
+        console.log("public\n" + public);
+        console.log("sign\n" + sign);
     }
+    signCase();
 });
