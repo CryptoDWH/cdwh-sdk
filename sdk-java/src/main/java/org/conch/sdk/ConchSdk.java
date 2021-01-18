@@ -1,11 +1,8 @@
 package org.conch.sdk;
 
-import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.conch.sdk.crypto.Crypto;
 import org.conch.sdk.crypto.PassPhrase;
@@ -168,10 +165,11 @@ public class ConchSdk {
             accountData.put("accountId", String.valueOf(accountId));
             accountData.put("rsAddress", rsAddress);
             System.out.println("Finished generateNewAccount");
-            System.out.println("public key:" + Convert.toHexString(publicKey));
-            System.out.println("private key:" + Convert.toHexString(privateKey));
-            System.out.println("account id:" + accountId);
-            System.out.println("rs address:" + rsAddress);
+            System.out.println("pass phrase: " + passPhrase);
+            System.out.println("public key: " + Convert.toHexString(publicKey));
+            System.out.println("private key: " + Convert.toHexString(privateKey));
+            System.out.println("account id: " + accountId);
+            System.out.println("rs address: " + rsAddress);
             return accountData;
         }
 
