@@ -567,15 +567,13 @@ var NRS = (function (NRS, $, undefined) {
         if (transaction.deadline !== data.deadline) {
             return false;
         }
-
-        if (transaction.recipient !== data.recipient) {
+        if (transaction.recipient !== data.recipient && transaction.recipient !== NRS.getAccountIdFromRS(data.recipient)) {
             if ((data.recipient == NRS.constants.GENESIS || data.recipient == "") && transaction.recipient == "0") {
                 //ok
             } else {
                 return false;
             }
         }
-
         if (transaction.amountNQT !== data.amountNQT) {
             return false;
         }

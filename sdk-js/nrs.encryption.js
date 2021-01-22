@@ -101,6 +101,14 @@ var NRS = (function (NRS, $) {
 	};
 
 	NRS.getAccountIdFromRS = function (addressRS) {
+		const pattern = /CDW-([A-Z0-9]{4}-){3}[A-Z0-9]{5}/;
+		if (!addressRS.toUpperCase().match(pattern)) {
+			console.log("recipient account format error")
+			throw {
+				"message": $.t("recipient_account_format_error"),
+				"errorCode": 1
+			};
+		}
 		let address = new MwAddress();
 		address.set(addressRS);
 		return address.account_id();
