@@ -1589,7 +1589,7 @@ var NRS = (function (NRS, $, undefined) {
     function addAddressData(data) {
         if (typeof data == "object" && ("recipient" in data)) {
             var address = new MwAddress();
-            if (/^NXT\-/i.test(data.recipient)) {
+            if (/^CDW\-/i.test(data.recipient)) {
                 data.recipientRS = data.recipient;
                 if (address.set(data.recipient)) {
                     data.recipient = address.account_id();

@@ -104,10 +104,11 @@ var NRS = (function (NRS, $) {
 		const pattern = /CDW-([A-Z0-9]{4}-){3}[A-Z0-9]{5}/;
 		if (!addressRS.toUpperCase().match(pattern)) {
 			console.log("recipient account format error")
-			throw {
-				"message": $.t("recipient_account_format_error"),
-				"errorCode": 1
-			};
+			// throw {
+			// 	"message": $.t("recipient_account_format_error"),
+			// 	"errorCode": 1
+			// };
+			return '';
 		}
 		let address = new MwAddress();
 		address.set(addressRS);
