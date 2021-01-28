@@ -1674,7 +1674,9 @@ var NRS = (function (NRS, $, undefined) {
     NRS.getMandatoryParams = function() {
         return {
             feeNQT: "0",
-            deadline: "1440"
+            deadline: "1440",
+            phasingHashedSecretAlgorithm: "2",
+            phased: "false"
         }
     };
 

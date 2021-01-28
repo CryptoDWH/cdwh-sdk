@@ -211,6 +211,18 @@ public class ConchSdk {
             System.out.println("Finished verifyAccount");
             System.out.println("VerifyAccount result:" + validAccount);
         }
+        // CASE: signature
+        public static String signature(String message, String secret) {
+            byte[] bytes = message.getBytes();
+            byte[] sign = Crypto.sign(bytes, secret);
+            return Convert.toHexString(sign);
+        }
+        // CASE: verify signature
+        public static boolean verifySign(String message, String secret, String signStr) {
+            byte[] parseHexString = Convert.parseHexString(signStr);
+            boolean verify = Crypto.verify(parseHexString, message.getBytes(), Crypto.getPublicKey(secret), false);
+            return verify;
+        }
     }
 
     public static void main(String[] args) {

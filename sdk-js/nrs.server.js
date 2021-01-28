@@ -567,15 +567,13 @@ var NRS = (function (NRS, $, undefined) {
         if (transaction.deadline !== data.deadline) {
             return false;
         }
-
-        if (transaction.recipient !== data.recipient) {
+        if (transaction.recipient !== data.recipient && transaction.recipient !== NRS.getAccountIdFromRS(data.recipient)) {
             if ((data.recipient == NRS.constants.GENESIS || data.recipient == "") && transaction.recipient == "0") {
                 //ok
             } else {
                 return false;
             }
         }
-
         if (transaction.amountNQT !== data.amountNQT) {
             return false;
         }
@@ -1591,7 +1589,7 @@ var NRS = (function (NRS, $, undefined) {
     function addAddressData(data) {
         if (typeof data == "object" && ("recipient" in data)) {
             var address = new MwAddress();
-            if (/^NXT\-/i.test(data.recipient)) {
+            if (/^CDW\-/i.test(data.recipient)) {
                 data.recipientRS = data.recipient;
                 if (address.set(data.recipient)) {
                     data.recipient = address.account_id();

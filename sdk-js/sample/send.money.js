@@ -8,17 +8,17 @@ loader.load(function(NRS) {
      * loader.load()已对sdk进行初始化并载入到 NRS对象，NRS通过回调入参传入，可通过 NRS.function(params)调用sdk内部定义的方法
      */
 
-    // 不带公钥，首次转账后账户余额不可用，需另行激活，通过该接口激活/sharder?requestType=setAccountInfo
-    var data_no_publicKey = {
-        recipient: NRS.getAccountIdFromRS(config.recipient), // accountRS to account id
-        amountNQT: NRS.convertToNQT("0.23"), // MW to NQT conversion
+    // 不带公钥
+    var data_none_publicKey = {
+        recipient: config.recipient, // accountRS
+        amountNQT: NRS.convertToNQT("1000"), // MW to NQT conversion
         secretPhrase: config.secretPhrase,
         // encryptedMessageIsPrunable: "true" // Optional - make the attached message prunable
     };
-    // 默认带上公钥，转账经确认后账户自动激活
+    // 带上公钥
     var data = {
         recipient: NRS.getAccountIdFromPublicKey(config.recipientPublicKey), // public key to account id
-        amountNQT: NRS.convertToNQT("0.23"), // MW to NQT conversion
+        amountNQT: NRS.convertToNQT("1"), // MW to NQT conversion
         recipientPublicKey: config.recipientPublicKey, // Optional - public key announcement to init a new account
         secretPhrase: config.secretPhrase,
         // encryptedMessageIsPrunable: "true" // Optional - make the attached message prunable
@@ -26,7 +26,7 @@ loader.load(function(NRS) {
 
     // Compose the request data
     data = Object.assign(
-        data,
+        data_none_publicKey,
         NRS.getMandatoryParams(),
         // NRS.encryptMessage(NRS, "note to myself", config.secretPhrase, NRS.getPublicKey(converters.stringToHexString(config.secretPhrase)), true), // dispensable 
         // NRS.encryptMessage(NRS, "message to recipient", config.secretPhrase, config.recipientPublicKey, false) // dispensable

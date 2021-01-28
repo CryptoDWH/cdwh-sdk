@@ -37,13 +37,14 @@ loader.load(function (NRS) {
             NRS.logConsole(JSON.stringify(response));
         })
     }
+    // sendMoney("", "1231", "HEBE-4ZGR-TQ4J-WYLF-HGKAN")
 
     /**
      * 签名验证函数
      */
     function signCase() {
         let message = converters.stringToHexString("1608545346000");
-        let secret = converters.stringToHexString("***");
+        let secret = converters.stringToHexString("finish rant princess crimson cold forward such known lace built poetry ceiling");
         let public = NRS.getPublicKey(secret, false);
         let sign = NRS.signBytes(message, secret);
         let verify = NRS.verifySignature(
@@ -57,5 +58,11 @@ loader.load(function (NRS) {
         console.log("public\n" + public);
         console.log("sign\n" + sign);
     }
-    signCase();
+    // signCase();
+
+    // console.log("accountId = " + NRS.getAccountIdFromRS("CDW-3333-3333-FYKW-33333"));
+    // console.log("accountId = " + NRS.getAccountIdFromRS("CDW-G7VD-M2L6-2EZK-HAZYN"));
+    // console.log("accountId = " + NRS.getAccountIdFromRS("CDW-87L3-HT5W-K9WD-3AQJ3"));
+    // console.log("accountId = " + NRS.getAccountIdFromRS("HEBE-4ZGR-TQ4J-WYLF-HGKAN"));
+    // console.log("accountRS = " + NRS.getAccountIdFromPublicKey("6065fa6fda743b3714f1ccb66543e3d5da658f886662a698e840831d1b6f225f", true))
 });
