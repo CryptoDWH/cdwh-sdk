@@ -74,8 +74,8 @@ public final class Convert {
         }
         char[] chars = new char[bytes.length * 2];
         for (int i = 0; i < bytes.length; i++) {
-            chars[i * 2] = hexChars[((bytes[i] >> 4) & 0xF)];
-            chars[i * 2 + 1] = hexChars[(bytes[i] & 0xF)];
+            chars[i * 2] = hexChars[((bytes[i] >> 4) & 0x0F)];
+            chars[i * 2 + 1] = hexChars[(bytes[i] & 0x0F)];
         }
         return String.valueOf(chars);
     }

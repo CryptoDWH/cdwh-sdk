@@ -1,5 +1,6 @@
 package org.conch.sdk;
 
+import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.conch.sdk.crypto.Crypto;
 import org.conch.sdk.crypto.PassPhrase;
 import org.conch.sdk.utils.Convert;
+import org.conch.sdk.utils.HttpClient;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.ParseException;
 
 /**
  * Conch SDK
@@ -147,6 +152,66 @@ public class ConchSdk {
         return isValidAccount(rsAddress, Convert.parseHexString(publicKey));
     }
 
+    public static final String SEND_URL = "http://43.250.175.32:9216/sharder?requestType=sendMoney";    // testNode
+    public static final String BROADCAST_URL = "http://43.250.175.32:9216/sharder?requestType=broadcastTransaction";    // testNode
+    public static final BigDecimal ONE_SS = new BigDecimal(100000000);
+
+    /**
+     * create transaction by public key
+     *
+     * 通过公钥创建交易
+     *
+     * @param recipient
+     * @param recipientPublicKey
+     * @param publicKey
+     * @param amountNQT
+     * @param fee
+     * @return
+     */
+    public static JSONObject sendTransaction(String recipient, String recipientPublicKey, String publicKey, BigDecimal amountNQT, BigDecimal fee) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("recipient", recipient);
+        params.put("recipientPublicKey", recipientPublicKey);
+        params.put("deadline", "1440");
+        params.put("phased", "false");
+        params.put("phasingLinkedFullHash", "");
+        params.put("phasingHashedSecret", "");
+        params.put("phasingHashedSecretAlgorithm", '2');
+        params.put("publicKey", publicKey);
+        params.put("feeNQT", fee.multiply(ONE_SS));
+        params.put("amountNQT", amountNQT.multiply(ONE_SS));
+        String s = HttpClient.doPost(SEND_URL, HttpClient.getPostParams(params));
+        try {
+            JSONObject res = (JSONObject) JSONValue.parseWithException(s);
+            return res;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    /**
+     * sign the transaction and broadcast to the internet
+     *
+     * 将创建的交易进行签名并广播
+     *
+     * @param transactionBytes
+     * @param prunableAttachmentJSON
+     * @return
+     */
+
+    public static JSONObject broadcast(String transactionBytes, String prunableAttachmentJSON) {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("transactionBytes", transactionBytes);
+        params.put("prunableAttachmentJSON", prunableAttachmentJSON);
+        String s = HttpClient.doPost(BROADCAST_URL, HttpClient.getPostParams(params));
+        try {
+            JSONObject res = (JSONObject) JSONValue.parseWithException(s);
+            return res;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
     /**
      * Use cases
      */
@@ -213,24 +278,55 @@ public class ConchSdk {
         }
         // CASE: signature
         public static String signature(String message, String secret) {
-            byte[] bytes = message.getBytes();
+            byte[] bytes = Convert.parseHexString(message);
             byte[] sign = Crypto.sign(bytes, secret);
             return Convert.toHexString(sign);
         }
         // CASE: verify signature
-        public static boolean verifySign(String message, String secret, String signStr) {
+        public static boolean verifySign(String message, String publicKey, String signStr) {
             byte[] parseHexString = Convert.parseHexString(signStr);
-            boolean verify = Crypto.verify(parseHexString, message.getBytes(), Crypto.getPublicKey(secret), false);
+            byte[] msg = Convert.parseHexString(message);
+            boolean verify = Crypto.verify(parseHexString, msg, Convert.parseHexString(publicKey), false);
             return verify;
+        }
+
+        // CASE: send transaction
+        public static String sendTransaction(String recipient, String recipientPublicKey, String secretPhrase, String amountNQT, String fee) {
+            String publicKey = Convert.toHexString(getPublicKey(secretPhrase));
+            JSONObject transactionRes = ConchSdk.sendTransaction(recipient, recipientPublicKey, publicKey, new BigDecimal(amountNQT), new BigDecimal(fee));
+            if (transactionRes != null && transactionRes.get("errorCode") == null) {
+                String unsignedTransactionBytes = transactionRes.get("unsignedTransactionBytes").toString();
+                String signature = ConchCase.signature(unsignedTransactionBytes, secretPhrase);
+                if ( ! ConchCase.verifySign(unsignedTransactionBytes, publicKey, signature)) {
+                    return "";
+                }
+                String transactionBytes = unsignedTransactionBytes.substring(0, 192) + signature + unsignedTransactionBytes.substring(320);
+                String prunableAttachmentJSON = "";
+                try {
+                    JSONObject transactionJSON = (JSONObject) JSONValue.parseWithException(transactionRes.get("transactionJSON").toString());
+                    prunableAttachmentJSON = transactionJSON.get("attachment").toString();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return "";
+                }
+                JSONObject broadcastRes = broadcast(transactionBytes, prunableAttachmentJSON);
+                if (broadcastRes != null && broadcastRes.get("errorCode") == null) {
+                    return broadcastRes.get("fullHash").toString();
+                }
+            }
+            return "";
         }
     }
 
     public static void main(String[] args) {
-        Map<String, String> account = ConchCase.generateAccount();
-        ConchCase.getAccountInfo(account.get("passPhrase"));
-        ConchCase.getAccountId(account.get("rsAddress"));
-        ConchCase.getRsAddress(Long.parseLong(account.get("accountId")));
-        ConchCase.verifyAccount(account.get("rsAddress"), account.get("publicKey"));
-        ConchCase.verifyAccount(account.get("rsAddress"), Convert.parseHexString(account.get("publicKey")));
+//        Map<String, String> account = ConchCase.generateAccount();
+//        ConchCase.getAccountInfo(account.get("passPhrase"));
+//        ConchCase.getAccountId(account.get("rsAddress"));
+//        ConchCase.getRsAddress(Long.parseLong(account.get("accountId")));
+//        ConchCase.verifyAccount(account.get("rsAddress"), account.get("publicKey"));
+//        ConchCase.verifyAccount(account.get("rsAddress"), Convert.parseHexString(account.get("publicKey")));
+        String transaction = ConchCase.sendTransaction("CDW-SBEN-K3SU-F5VK-6PTTW", "852f8a329eca7752511e8b97b264bcea44b6d9f7d54db1b28725a23b08862965", "impossible radio line tell prefer cut shoot conversation deliver prefer local dev2", "2000", "1");
+        System.out.println("txHash:" + transaction);
+
     }
 }
