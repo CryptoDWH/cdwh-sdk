@@ -32,6 +32,24 @@ var NRS = (function (NRS, $) {
 	};
 	NRS.resetEncryptionState();
 
+	NRS.getSecretPhraseDigestToHex = function (secretPhrase) {
+		var secretPhraseBytes = converters.stringToByteArray(secretPhrase);
+		var digest = simpleHash(secretPhraseBytes);
+		return converters.byteArrayToHexString(digest);
+	}
+
+	NRS.getSecretPhraseDigest = function (secretPhrase) {
+		let digest = null;
+		// secretPhrase is own digestHex
+		if (secretPhrase.indexOf(" ") == -1 && secretPhrase.length == 64) {
+			digest = converters.hexStringToByteArray(secretPhrase);
+		} else {
+			let secretPhraseBytes = converters.stringToByteArray(secretPhrase);
+			digest = simpleHash(secretPhraseBytes);
+		}
+		return digest;
+	}
+
 	NRS.generatePublicKey = function(secretPhrase) {
 		if (!secretPhrase) {
 			if (NRS.rememberPassword) {
@@ -41,7 +59,7 @@ var NRS = (function (NRS, $) {
 			}
 		}
 
-		return NRS.getPublicKey(converters.stringToHexString(secretPhrase));
+		return NRS.getPublicKey(secretPhrase);
 	};
 
 	NRS.getPublicKey = function(secretPhrase, isAccountNumber) {
@@ -62,19 +80,19 @@ var NRS = (function (NRS, $) {
 
 			return publicKey;
 		} else {
-			var secretPhraseBytes = converters.hexStringToByteArray(secretPhrase);
-			var digest = simpleHash(secretPhraseBytes);
+			let digest = null;
+			digest = NRS.getSecretPhraseDigest(secretPhrase);
 			return converters.byteArrayToHexString(curve25519.keygen(digest).p);
 		}
 	};
 
 	NRS.getPrivateKey = function(secretPhrase) {
-		var bytes = simpleHash(converters.stringToByteArray(secretPhrase));
-        return converters.shortArrayToHexString(curve25519_clamp(converters.byteArrayToShortArray(bytes)));
+		let bytes = NRS.getSecretPhraseDigest(secretPhrase);
+		return converters.shortArrayToHexString(curve25519_clamp(converters.byteArrayToShortArray(bytes)));
 	};
 
 	NRS.getAccountId = function(secretPhrase) {
-		return NRS.getAccountIdFromPublicKey(NRS.getPublicKey(converters.stringToHexString(secretPhrase)));
+		return NRS.getAccountIdFromPublicKey(NRS.getPublicKey(secretPhrase));
 	};
 
 	NRS.getAccountIdFromPublicKey = function(publicKey, RSFormat) {
